@@ -35,7 +35,7 @@ class FilmDetailsViewModel @Inject constructor(
         getFilmDetailsUseCase(filmId).onEach { result ->
             when (result) {
                 is Failure -> {
-                    Log.e(TAG, "getSections: ${result.error}", )
+                    Log.e(TAG, "getSections: ${result.error}")
                     result.error.handleError { message, messageId, _ ->
                         _uiState.update {
                             it.copy(
@@ -56,12 +56,5 @@ class FilmDetailsViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun onHandledError() {
-        _uiState.value = uiState.value.copy(
-            errorMessage = null,
-            errorMessageId = null,
-        )
     }
 }

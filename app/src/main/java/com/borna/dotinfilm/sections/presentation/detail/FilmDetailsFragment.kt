@@ -33,10 +33,16 @@ class FilmDetailsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val filmId = arguments?.getInt("filmId")
+
+        binding.refresh.setOnClickListener {
+            hideError()
+            viewModel.getFilmDetails(filmId ?: 0)
+        }
+
         init()
         observeState()
 
-        val filmId = arguments?.getInt("filmId")
         viewModel.getFilmDetails(filmId ?: 0)
     }
 
@@ -89,15 +95,22 @@ class FilmDetailsFragment: Fragment() {
     }
 
     private fun showLoadingIndicator() {
-        // Show a loading spinner or progress bar
+        binding.progress.visibility = View.VISIBLE
     }
 
     private fun hideLoadingIndicator() {
-        // Hide the loading spinner or progress bar
+        binding.progress.visibility = View.GONE
     }
 
     private fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-        viewModel.onHandledError()
+        binding.error.text = message
+        binding.error.visibility = View.VISIBLE
+        binding.refresh.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        binding.error.text = ""
+        binding.error.visibility = View.GONE
+        binding.refresh.visibility = View.GONE
     }
 }
