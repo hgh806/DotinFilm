@@ -71,9 +71,9 @@ class FilmDetailsFragment: Fragment() {
         uiState.filmDetails?.let { details ->
             binding.title.text = details.name
             binding.description.text = details.description
-            binding.durationTextView.text = details.duration.toString()
-            binding.imdbTextView.text = details.imdb
-            binding.ageTextView.text = details.age.toString()
+            binding.durationTextView.text = details.duration.toString() + getString(R.string.minute)
+            binding.imdbTextView.text = getString(R.string.imdb) + " " + details.imdb
+            binding.ageTextView.text = "+" + details.age.toString()
             Glide.with(this).load(details.bannerUrl).into(binding.imgBanner)
 
             detailsFragment.bindData(uiState.filmDetails.images)
