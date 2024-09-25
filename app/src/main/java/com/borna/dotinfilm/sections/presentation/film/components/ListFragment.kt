@@ -1,4 +1,4 @@
-package com.borna.dotinfilm.sections.presentation.film
+package com.borna.dotinfilm.sections.presentation.film.components
 
 import android.os.Bundle
 import android.view.View

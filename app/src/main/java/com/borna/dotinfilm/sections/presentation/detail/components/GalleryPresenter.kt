@@ -1,4 +1,4 @@
-package com.borna.dotinfilm.sections.presentation.detail
+package com.borna.dotinfilm.sections.presentation.detail.components
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

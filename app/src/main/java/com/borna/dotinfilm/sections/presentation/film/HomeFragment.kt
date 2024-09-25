@@ -8,14 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.databinding.FragmentHomeBinding
 import com.borna.dotinfilm.sections.domain.models.Film
-import com.borna.dotinfilm.sections.presentation.detail.FilmDetailsFragment
+import com.borna.dotinfilm.sections.presentation.film.components.ListFragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

@@ -20,7 +20,8 @@ import com.borna.dotinfilm.R
 import com.borna.dotinfilm.sections.domain.models.Film
 import com.borna.dotinfilm.sections.presentation.detail.components.ActionButtonType
 import com.borna.dotinfilm.sections.presentation.detail.components.FilmActionButtonPresenter
-import com.borna.dotinfilm.sections.presentation.film.CustomHeaderPresenter
+import com.borna.dotinfilm.sections.presentation.detail.components.GalleryPresenter
+import com.borna.dotinfilm.sections.presentation.film.components.CustomHeaderPresenter
 
 
 class DetailsFragment : RowsSupportFragment() {
