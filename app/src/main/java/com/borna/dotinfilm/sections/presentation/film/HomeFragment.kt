@@ -102,5 +102,6 @@ class HomeFragment: Fragment() {
 
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        viewModel.onHandledError()
     }
 }
