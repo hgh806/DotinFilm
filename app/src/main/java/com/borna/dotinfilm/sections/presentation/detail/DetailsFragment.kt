@@ -3,9 +3,7 @@ package com.borna.dotinfilm.sections.presentation.detail
 import android.os.Bundle
 import android.view.View
 import androidx.leanback.app.RowsSupportFragment
-import androidx.leanback.widget.Action
 import androidx.leanback.widget.ArrayObjectAdapter
-import androidx.leanback.widget.DetailsOverviewRow
 import androidx.leanback.widget.FocusHighlight
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
@@ -15,7 +13,6 @@ import androidx.leanback.widget.OnItemViewSelectedListener
 import androidx.leanback.widget.Presenter
 import androidx.leanback.widget.Row
 import androidx.leanback.widget.RowPresenter
-import androidx.leanback.widget.SparseArrayObjectAdapter
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.sections.domain.models.Film
 import com.borna.dotinfilm.sections.presentation.detail.components.FilmActionButtonPresenter
@@ -26,6 +23,7 @@ class DetailsFragment : RowsSupportFragment() {
 
     private var itemSelectedListener: ((Film) -> Unit)? = null
     private var itemClickListener: ((Film) -> Unit)? = null
+    private var likeClickListener: (() -> Unit)? = null
 
     private val listRowPresenter = object : ListRowPresenter(FocusHighlight.ZOOM_FACTOR_MEDIUM) {
         override fun isUsingDefaultListSelectEffect(): Boolean {
@@ -43,8 +41,22 @@ class DetailsFragment : RowsSupportFragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = rootAdapter
 
+        setupLikeAndPlayButtons()
+
         onItemViewSelectedListener = ItemViewSelectedListener()
         onItemViewClickedListener = ItemViewClickListener()
+    }
+
+    private fun setupLikeAndPlayButtons() {
+        val filmActionButtonPresenter = FilmActionButtonPresenter()
+        filmActionButtonPresenter.setOnItemClickListener {
+            likeClickListener?.invoke()
+        }
+        val buttonsObjectAdapter = ArrayObjectAdapter(filmActionButtonPresenter)
+        buttonsObjectAdapter.add("play")
+        buttonsObjectAdapter.add("like")
+        val listRow = ListRow(buttonsObjectAdapter)
+        rootAdapter.add(listRow)
     }
 
     fun bindData(sections: List<String>) {
@@ -53,8 +65,12 @@ class DetailsFragment : RowsSupportFragment() {
             arrayObjectAdapter.add(it)
         }
         val headerItem = HeaderItem(getString(R.string.film_images))
-        val listRow = ListRow(headerItem, arrayObjectAdapter)
+        val listRow = ListRow( headerItem, arrayObjectAdapter)
         rootAdapter.add(listRow)
+    }
+
+    fun setOnLikeClickListener(listener: () -> Unit) {
+        this.likeClickListener = listener
     }
 
     inner class ItemViewSelectedListener : OnItemViewSelectedListener {

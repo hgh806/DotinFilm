@@ -42,6 +42,9 @@ class FilmDetailsFragment: Fragment() {
 
     private fun init() {
         detailsFragment = DetailsFragment()
+        detailsFragment.setOnLikeClickListener {
+            Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+        }
         val transaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.list_fragment, detailsFragment)
         transaction.commit()

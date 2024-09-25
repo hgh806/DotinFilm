@@ -20,7 +20,7 @@ class CustomHeaderPresenter : RowHeaderPresenter() {
     override fun onBindViewHolder(viewHolder: Presenter.ViewHolder, item: Any?) {
         val headerItem = item as ListRow
         val headerTitle = viewHolder.view.findViewById<TextView>(R.id.header_title)
-        headerTitle.text = headerItem.headerItem.name
+        headerTitle.text = headerItem.headerItem?.name ?: ""
     }
 
     override fun onUnbindViewHolder(viewHolder: Presenter.ViewHolder) {
