@@ -1,5 +1,7 @@
 package com.borna.dotinfilm.sections.di
 
+import com.borna.dotinfilm.core.data.local.DotinDatabase
+import com.borna.dotinfilm.sections.data.local.dao.FilmDao
 import com.borna.dotinfilm.sections.data.remote.api.FilmApiService
 import com.borna.dotinfilm.sections.data.repository.FilmRepositoryImp
 import com.borna.dotinfilm.sections.domain.repository.FilmRepository
@@ -25,8 +27,8 @@ object FilmModule {
 
     @Provides
     @Singleton
-    fun provideFilmRepository(filmApiService: FilmApiService): FilmRepository {
-        return FilmRepositoryImp(filmApiService)
+    fun provideFilmRepository(filmApiService: FilmApiService, dotinDatabase: DotinDatabase): FilmRepository {
+        return FilmRepositoryImp(filmApiService, dotinDatabase.filmDao())
     }
 
     @Provides

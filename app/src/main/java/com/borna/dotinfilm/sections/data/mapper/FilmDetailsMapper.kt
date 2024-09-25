@@ -1,5 +1,6 @@
 package com.borna.dotinfilm.sections.data.mapper
 
+import com.borna.dotinfilm.sections.data.local.entities.FilmEntity
 import com.borna.dotinfilm.sections.data.remote.response.filmDetails.FilmDetailsResponse
 import com.borna.dotinfilm.sections.domain.models.FilmDetails
 
@@ -16,5 +17,12 @@ fun FilmDetailsResponse.toFilmDetails(): FilmDetails {
         genres = content.genres?.map { it.name } ?: emptyList(),
         imdb = content.imdbRate.toString(),
         duration = content.duration ?: 0
+    )
+}
+
+fun FilmDetails.toFilmEntity(): FilmEntity {
+    return FilmEntity(
+        id = id.toString(),
+        name = name
     )
 }

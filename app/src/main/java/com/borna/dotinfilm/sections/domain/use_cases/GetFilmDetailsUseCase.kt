@@ -8,6 +8,7 @@ import com.borna.dotinfilm.core.data.remote.adapter.ifSuccessful
 import com.borna.dotinfilm.core.data.remote.adapter.onSuccessful
 import com.borna.dotinfilm.core.data.remote.adapter.otherwise
 import com.borna.dotinfilm.sections.data.mapper.toFilmDetails
+import com.borna.dotinfilm.sections.data.mapper.toFilmEntity
 import com.borna.dotinfilm.sections.data.mapper.toSection
 import com.borna.dotinfilm.sections.domain.models.FilmDetails
 import com.borna.dotinfilm.sections.domain.models.Section
@@ -23,6 +24,8 @@ class GetFilmDetailsUseCase(
     operator fun invoke(filmId: Int): Flow<Response<FilmDetails>>  = flow {
         repository.getFilmDetails(filmId).onSuccessful { response ->
             val filmDetails = response.toFilmDetails()
+            val filmEntity = filmDetails.toFilmEntity()
+            repository.saveFilm(filmEntity)
             IsSucceed(filmDetails)
         }.ifSuccessful {
             emit(Success(it.data!!))
