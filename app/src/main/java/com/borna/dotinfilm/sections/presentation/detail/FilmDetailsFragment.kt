@@ -22,16 +22,6 @@ class FilmDetailsFragment: Fragment() {
     private lateinit var binding: FragmentFilmDetailsBinding
     private lateinit var detailsFragment: DetailsFragment
 
-    companion object {
-        fun newInstance(filmId: Int): FilmDetailsFragment {
-            val fragment = FilmDetailsFragment()
-            val args = Bundle()
-            args.putInt("filmId", filmId)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
