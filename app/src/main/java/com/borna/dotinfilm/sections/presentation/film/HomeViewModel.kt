@@ -57,12 +57,4 @@ class HomeViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-
-    fun onHandledError() {
-        _uiState.value = uiState.value.copy(
-            errorMessage = null,
-            errorMessageId = null,
-        )
-    }
 }

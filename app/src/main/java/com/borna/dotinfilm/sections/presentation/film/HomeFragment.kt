@@ -22,19 +22,24 @@ import kotlinx.coroutines.launch
 class HomeFragment: Fragment() {
     private val viewModel: HomeViewModel by viewModels()
     private var listFragment: ListFragment? = null
-    private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentHomeBinding = FragmentHomeBinding.inflate(layoutInflater)
-        return fragmentHomeBinding.root
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.refresh.setOnClickListener {
+            hideError()
+            viewModel.getSections()
+        }
+
         init()
         observeState()
         viewModel.getSections()
@@ -62,9 +67,9 @@ class HomeFragment: Fragment() {
     }
 
     private fun updateBanner(film: Film) {
-        fragmentHomeBinding.title.text = film.name
-        fragmentHomeBinding.description.text = film.description
-        Glide.with(this).load(film.bannerUrl).into(fragmentHomeBinding.imgBanner)
+        binding.title.text = film.name
+        binding.description.text = film.description
+        Glide.with(this).load(film.bannerUrl).into(binding.imgBanner)
     }
 
 
@@ -100,15 +105,22 @@ class HomeFragment: Fragment() {
     }
 
     private fun showLoadingIndicator() {
-        // Show a loading spinner or progress bar
+        binding.progress.visibility = View.VISIBLE
     }
 
     private fun hideLoadingIndicator() {
-        // Hide the loading spinner or progress bar
+        binding.progress.visibility = View.GONE
     }
 
     private fun showError(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-        viewModel.onHandledError()
+        binding.error.text = message
+        binding.error.visibility = View.VISIBLE
+        binding.refresh.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        binding.error.text = ""
+        binding.error.visibility = View.GONE
+        binding.refresh.visibility = View.GONE
     }
 }
