@@ -14,7 +14,6 @@ import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.databinding.FragmentHomeBinding
 import com.borna.dotinfilm.sections.domain.models.Film
-import com.borna.dotinfilm.sections.presentation.detail.FilmDetailsFragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
     private val viewModel: HomeViewModel by viewModels()
-    private lateinit var listFragment: ListFragment
+    private var listFragment: ListFragment? = null
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
 
     override fun onCreateView(
@@ -42,16 +41,20 @@ class HomeFragment: Fragment() {
     }
 
     private fun init() {
+        if (listFragment != null) {
+            return
+        }
+
         listFragment = ListFragment()
         val transaction = childFragmentManager.beginTransaction()
-        transaction.add(R.id.list_fragment, listFragment)
+        transaction.replace(R.id.list_fragment, listFragment!!)
         transaction.commit()
 
-        listFragment.setOnContentSelectedListener {
+        listFragment!!.setOnContentSelectedListener {
             updateBanner(it)
         }
 
-        listFragment.setOnItemClickListener { item ->
+        listFragment!!.setOnItemClickListener { item ->
             findNavController(this).navigate(R.id.actionHomeToFilmDetails, Bundle().apply {
                 putInt("filmId", item.id)
             })
@@ -84,7 +87,7 @@ class HomeFragment: Fragment() {
 
         // Handle sections
         if (uiState.sections.isNotEmpty()) {
-            listFragment.bindData(uiState.sections)
+            listFragment?.bindData(uiState.sections)
         }
 
         // Handle errors
