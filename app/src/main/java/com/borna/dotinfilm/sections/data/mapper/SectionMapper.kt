@@ -24,6 +24,7 @@ fun FilmDetails.toFilm(): Film {
         disliked = userPostInfo?.disliked ?: false,
         liked = userPostInfo?.liked ?: false,
         favorite = userPostInfo?.favorite ?: false,
-        bannerUrl = bannerUrl ?: ""
+        bannerUrl = bannerUrl ?: "",
+        showBadge = false
     )
 }

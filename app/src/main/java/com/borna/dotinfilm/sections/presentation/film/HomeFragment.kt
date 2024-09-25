@@ -4,16 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.databinding.FragmentHomeBinding
 import com.borna.dotinfilm.sections.domain.models.Film
+import com.borna.dotinfilm.sections.presentation.detail.FilmDetailsFragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,8 +23,21 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class HomeFragment: Fragment() {
     private val viewModel: HomeViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
     private var listFragment: ListFragment? = null
     private lateinit var binding: FragmentHomeBinding
+
+    override fun onResume() {
+        super.onResume()
+
+        sharedViewModel.badgeState.observe(viewLifecycleOwner) { badgeState ->
+            if (badgeState?.second == true) {
+                viewModel.changeBadgeState(badgeState.first, true)
+                sharedViewModel.badgeState.value = Pair(badgeState.first, false)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +57,9 @@ class HomeFragment: Fragment() {
 
         init()
         observeState()
-        viewModel.getSections()
+        if (viewModel.uiState.value.sections.isEmpty()) {
+            viewModel.getSections()
+        }
     }
 
     private fun init() {
@@ -63,6 +80,10 @@ class HomeFragment: Fragment() {
             findNavController(this).navigate(R.id.actionHomeToFilmDetails, Bundle().apply {
                 putInt("filmId", item.id)
             })
+        }
+
+        listFragment!!.setOnLikeChangeListener { item ->
+            viewModel.changeBadgeState(item.id, false)
         }
     }
 

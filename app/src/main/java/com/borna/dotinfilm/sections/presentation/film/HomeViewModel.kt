@@ -57,4 +57,26 @@ class HomeViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun changeBadgeState(filmId: Int, show: Boolean) {
+        val films = _uiState.value.sections.flatMap { it.films }
+        val index = films.indexOfFirst { it.id == filmId }
+
+        _uiState.update {
+            it.copy(
+                sections = it.sections.map { section ->
+                    section.copy(
+                        films = section.films.mapIndexed { i, film ->
+                            if (i == index) {
+                                Log.i(TAG, "changeBadgeState: $filmId $show")
+                                film.copy(showBadge = show)
+                            } else {
+                                film
+                            }
+                        }
+                    )
+                }
+            )
+        }
+    }
 }

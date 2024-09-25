@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.databinding.FragmentFilmDetailsBinding
+import com.borna.dotinfilm.sections.presentation.film.SharedViewModel
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -20,6 +22,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class FilmDetailsFragment: Fragment() {
     private val viewModel: FilmDetailsViewModel by viewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
     private lateinit var binding: FragmentFilmDetailsBinding
     private lateinit var detailsFragment: DetailsFragment
 
@@ -51,6 +55,9 @@ class FilmDetailsFragment: Fragment() {
         detailsFragment = DetailsFragment()
         detailsFragment.setOnLikeClickListener {
             viewModel.likeFilm()
+            viewModel.uiState.value.filmDetails?.let { details ->
+                sharedViewModel.badgeState.value = Pair(details.id, details.liked)
+            }
         }
         val transaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.list_fragment, detailsFragment)

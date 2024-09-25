@@ -8,5 +8,6 @@ data class Film(
     val bannerUrl: String,
     val disliked: Boolean,
     val favorite: Boolean,
-    val liked: Boolean
+    val liked: Boolean,
+    val showBadge: Boolean
 )

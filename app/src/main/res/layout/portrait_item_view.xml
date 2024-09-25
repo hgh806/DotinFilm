@@ -19,10 +19,14 @@
         android:id="@+id/like_image"
         android:layout_width="41dp"
         android:layout_height="41dp"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/like_filled"
+        android:background="@drawable/ellipse"
         android:contentDescription="@string/film_image"
         app:layout_constraintEnd_toEndOf="@id/film_image"
-        app:layout_constraintTop_toTopOf="@id/film_image" />
+        app:layout_constraintTop_toTopOf="@id/film_image"
+        app:tint="@color/black" />
 
     <TextView
         android:id="@+id/film_title"
