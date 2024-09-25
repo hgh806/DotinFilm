@@ -2,6 +2,7 @@ package com.borna.dotinfilm.sections.data.remote.api
 
 import com.borna.dotinfilm.core.data.remote.adapter.DotinApiErr
 import com.borna.dotinfilm.core.data.remote.adapter.NetworkResponse
+import com.borna.dotinfilm.sections.data.remote.response.filmDetails.FilmDetailsResponse
 import com.borna.dotinfilm.sections.data.remote.response.section.FilmDetails
 import com.borna.dotinfilm.sections.data.remote.response.section.SectionResponseDto
 import retrofit2.http.GET
@@ -12,5 +13,5 @@ interface FilmApiService {
     suspend fun getSections(): NetworkResponse<SectionResponseDto, DotinApiErr>
 
     @GET("contents/{filmId}")
-    suspend fun getFilmDetails(@Path("filmId") filmId: Int): NetworkResponse<FilmDetails, DotinApiErr>
+    suspend fun getFilmDetails(@Path("filmId") filmId: Int): NetworkResponse<FilmDetailsResponse, DotinApiErr>
 }

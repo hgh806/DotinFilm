@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.borna.dotinfilm.core.data.remote.adapter.Failure
 import com.borna.dotinfilm.core.data.remote.adapter.Success
 import com.borna.dotinfilm.core.data.remote.adapter.handleError
-import com.borna.dotinfilm.sections.domain.use_cases.GetSectionsUseCase
+import com.borna.dotinfilm.sections.domain.use_cases.GetFilmDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,12 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilmDetailsViewModel @Inject constructor(
-    val getSectionsUseCase: GetSectionsUseCase,
+    val getFilmDetailsUseCase: GetFilmDetailsUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(FilmUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun getSections() {
+    fun getFilmDetails(filmId: Int) {
         _uiState.update {
             it.copy(
                 isLoading = true,
@@ -32,7 +32,7 @@ class FilmDetailsViewModel @Inject constructor(
             )
         }
 
-        getSectionsUseCase().onEach { result ->
+        getFilmDetailsUseCase(filmId).onEach { result ->
             when (result) {
                 is Failure -> {
                     Log.e(TAG, "getSections: ${result.error}", )
@@ -40,7 +40,7 @@ class FilmDetailsViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                sections = emptyList(),
+                                filmDetails = null,
                                 errorMessage = message,
                                 errorMessageId = messageId,
                             )
@@ -51,7 +51,7 @@ class FilmDetailsViewModel @Inject constructor(
                 is Success -> _uiState.update {
                     it.copy(
                         isLoading = false,
-                        sections = result.value,
+                        filmDetails = result.value,
                     )
                 }
             }
