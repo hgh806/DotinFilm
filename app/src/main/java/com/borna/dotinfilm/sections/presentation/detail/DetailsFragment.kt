@@ -1,6 +1,9 @@
 package com.borna.dotinfilm.sections.presentation.detail
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -15,6 +18,7 @@ import androidx.leanback.widget.Row
 import androidx.leanback.widget.RowPresenter
 import com.borna.dotinfilm.R
 import com.borna.dotinfilm.sections.domain.models.Film
+import com.borna.dotinfilm.sections.presentation.detail.components.ActionButtonType
 import com.borna.dotinfilm.sections.presentation.detail.components.FilmActionButtonPresenter
 import com.borna.dotinfilm.sections.presentation.film.CustomHeaderPresenter
 
@@ -41,25 +45,35 @@ class DetailsFragment : RowsSupportFragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = rootAdapter
 
-        setupLikeAndPlayButtons()
-
         onItemViewSelectedListener = ItemViewSelectedListener()
         onItemViewClickedListener = ItemViewClickListener()
     }
 
-    private fun setupLikeAndPlayButtons() {
+    private fun setupLikeAndPlayButtons(isLiked: Boolean) {
         val filmActionButtonPresenter = FilmActionButtonPresenter()
         filmActionButtonPresenter.setOnItemClickListener {
             likeClickListener?.invoke()
+            Handler(Looper.getMainLooper()).postDelayed({rootAdapter.notifyItemRangeChanged(0,1)}, 1000)
         }
         val buttonsObjectAdapter = ArrayObjectAdapter(filmActionButtonPresenter)
-        buttonsObjectAdapter.add("play")
-        buttonsObjectAdapter.add("like")
+        buttonsObjectAdapter.add(ActionButtonType.Play)
+        buttonsObjectAdapter.add(ActionButtonType.Like(isLiked)).apply {
+            Log.i("TAG", "setupLikeAndPlayButtons: $isLiked")
+        }
         val listRow = ListRow(buttonsObjectAdapter)
-        rootAdapter.add(listRow)
+        //prevent to add more than one row
+        if (rootAdapter.size() > 0)
+            rootAdapter.remove(rootAdapter.get(0)!!)
+        rootAdapter.add(0, listRow)
     }
 
-    fun bindData(sections: List<String>) {
+    fun bindData(sections: List<String>, isLiked: Boolean) {
+        setupLikeAndPlayButtons(isLiked)
+
+        //prevent to add more than one row
+        if (rootAdapter.size() > 1)
+            return
+
         val arrayObjectAdapter = ArrayObjectAdapter(GalleryPresenter())
         sections.forEach {
             arrayObjectAdapter.add(it)

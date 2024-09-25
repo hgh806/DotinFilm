@@ -8,8 +8,6 @@ data class FilmDetails(
     val age: Int,
     val duration: Int,
     val bannerUrl: String,
-    val disliked: Boolean,
-    val favorite: Boolean,
     val liked: Boolean,
     val imdb: String,
     val genres: List<String>,

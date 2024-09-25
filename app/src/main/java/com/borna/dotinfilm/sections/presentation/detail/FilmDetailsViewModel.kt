@@ -57,4 +57,12 @@ class FilmDetailsViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun likeFilm() {
+        _uiState.value.filmDetails?.let {
+            Log.i(TAG, "likeFilm: ${it.liked.not()}")
+            val details = it.copy(liked = it.liked.not())
+            _uiState.update { it.copy(filmDetails = details) }
+        }
+    }
 }

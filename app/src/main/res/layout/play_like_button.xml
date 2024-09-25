@@ -18,6 +18,5 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginHorizontal="16dp"
-        android:src="@drawable/like"
         android:backgroundTint="#5D6E7F"/>
 </LinearLayout>

@@ -1,10 +1,11 @@
 package com.borna.dotinfilm.sections.presentation.detail
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -49,7 +50,7 @@ class FilmDetailsFragment: Fragment() {
     private fun init() {
         detailsFragment = DetailsFragment()
         detailsFragment.setOnLikeClickListener {
-            Toast.makeText(requireContext(), "Liked", Toast.LENGTH_SHORT).show()
+            viewModel.likeFilm()
         }
         val transaction = childFragmentManager.beginTransaction()
         transaction.add(R.id.list_fragment, detailsFragment)
@@ -68,21 +69,25 @@ class FilmDetailsFragment: Fragment() {
     private fun handleUiState(uiState: FilmUiState) {
         // Handle loading state
         if (uiState.isLoading) {
-            showLoadingIndicator()
+            onShowLoading()
         } else {
-            hideLoadingIndicator()
+            onHideLoading()
         }
 
         // Handle sections
         uiState.filmDetails?.let { details ->
+            binding.imdbTextView.visibility = View.VISIBLE
+            binding.ageTextView.visibility = View.VISIBLE
+            binding.durationTextView.visibility = View.VISIBLE
+
             binding.title.text = details.name
             binding.description.text = details.description
             binding.durationTextView.text = details.duration.toString() + getString(R.string.minute)
             binding.imdbTextView.text = getString(R.string.imdb) + " " + details.imdb
             binding.ageTextView.text = "+" + details.age.toString()
             Glide.with(this).load(details.bannerUrl).into(binding.imgBanner)
-
-            detailsFragment.bindData(uiState.filmDetails.images)
+            Log.i(TAG, "handleUiState: ${details.liked}")
+            detailsFragment.bindData(details.images, details.liked)
         }
 
         // Handle errors
@@ -94,11 +99,14 @@ class FilmDetailsFragment: Fragment() {
         }
     }
 
-    private fun showLoadingIndicator() {
+    private fun onShowLoading() {
+        binding.imdbTextView.visibility = View.GONE
+        binding.ageTextView.visibility = View.GONE
+        binding.durationTextView.visibility = View.GONE
         binding.progress.visibility = View.VISIBLE
     }
 
-    private fun hideLoadingIndicator() {
+    private fun onHideLoading() {
         binding.progress.visibility = View.GONE
     }
 
