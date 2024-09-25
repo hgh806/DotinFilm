@@ -1,0 +1,121 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#282828">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".07" />
+
+    <ImageView
+        android:id="@+id/img_banner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintDimensionRatio="16:9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/gradient_horizontal"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/banner_gradient"
+        />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:textSize="26sp"
+        android:textColor="#fff"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".4"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/age_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/red_border_image"
+        android:paddingHorizontal="16dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/duration_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_border_image"
+        android:paddingHorizontal="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/age_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+
+
+    <TextView
+        android:id="@+id/imdb_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/yellow_border_image"
+        android:paddingHorizontal="16dp"
+        android:layout_marginStart="16dp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/duration_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:textSize="13sp"
+        android:textColor="#fff"
+        android:layout_marginTop="16dp"
+        android:maxLines="3"
+        android:lineSpacingMultiplier="1.2"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintTop_toBottomOf="@+id/age_text_view"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start"
+        android:layout_height="wrap_content"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/list_fragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
