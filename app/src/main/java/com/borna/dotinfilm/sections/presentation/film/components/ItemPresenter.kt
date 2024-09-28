@@ -33,13 +33,15 @@ class ItemPresenter(val cardType: String, val likeChangeCallBack: (Film) -> Unit
             val visibility = if (film.showBadge) View.VISIBLE else View.GONE
             badgeImage.visibility = visibility
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                likeChangeCallBack(film)
-                badgeImage.visibility = View.GONE
-            }, 3000)
+            if (film.showBadge) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    likeChangeCallBack(film)
+                    badgeImage.visibility = View.GONE
+                }, 3000)
+            }
         }
         val imageView = viewHolder.view.findViewById<ImageView>(R.id.film_image)
-        Glide.with(viewHolder.view.context).load(film.imageUrl).transform(RoundedCorners(20)).into(imageView)
+        Glide.with(viewHolder.view.context).load(film.imageUrl).transform(RoundedCorners(12)).into(imageView)
     }
 
     override fun onUnbindViewHolder(p0: ViewHolder) {
