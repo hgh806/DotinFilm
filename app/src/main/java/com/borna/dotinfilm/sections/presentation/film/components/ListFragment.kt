@@ -1,7 +1,10 @@
 package com.borna.dotinfilm.sections.presentation.film.components
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
+import android.widget.ImageView
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.FocusHighlight
@@ -13,6 +16,7 @@ import androidx.leanback.widget.OnItemViewSelectedListener
 import androidx.leanback.widget.Presenter
 import androidx.leanback.widget.Row
 import androidx.leanback.widget.RowPresenter
+import com.borna.dotinfilm.R
 import com.borna.dotinfilm.sections.domain.models.Film
 import com.borna.dotinfilm.sections.domain.models.Section
 
@@ -22,6 +26,8 @@ class ListFragment : RowsSupportFragment() {
     private var itemSelectedListener: ((Film) -> Unit)? = null
     private var itemClickListener: ((Film) -> Unit)? = null
     private var itemLikeChangeListener: ((Film) -> Unit)? = null
+
+    private var selectedItemViewHolder: Presenter.ViewHolder? = null
 
     private val listRowPresenter = object : ListRowPresenter(FocusHighlight.ZOOM_FACTOR_MEDIUM) {
         override fun isUsingDefaultListSelectEffect(): Boolean {
@@ -57,10 +63,15 @@ class ListFragment : RowsSupportFragment() {
 
             val headerItem = HeaderItem(section.name)
             val listRow = ListRow(headerItem, arrayObjectAdapter)
-            if (rootAdapter.size() > index)
-                rootAdapter.replace(index, listRow)
-            else
-                rootAdapter.add(listRow)
+            Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    if (rootAdapter.size() > index)
+                        rootAdapter.replace(index, listRow)
+                    else
+                        rootAdapter.add(listRow)
+                },
+                100
+            )
         }
     }
 
@@ -85,6 +96,14 @@ class ListFragment : RowsSupportFragment() {
             row: Row?,
         ) {
             if (item is Film) {
+                selectedItemViewHolder?.view?.findViewById<ImageView>(R.id.film_image)?.apply {
+                    setBackgroundResource(0)
+                }
+
+                itemViewHolder?.view?.findViewById<ImageView>(R.id.film_image)?.apply {
+                    selectedItemViewHolder = itemViewHolder
+                    setBackgroundResource(R.drawable.border_selected)
+                }
                 itemSelectedListener?.invoke(item)
             }
         }
